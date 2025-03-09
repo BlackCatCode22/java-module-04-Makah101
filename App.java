@@ -1,9 +1,13 @@
 package dennisMohle.myZoo.com;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
@@ -19,39 +23,42 @@ public class App {
         ArrayList<Animal> animals = new ArrayList<>();
 
         // Open an external file, parse it line by line, and get age and species
-        String filePath = "C:/2024_Spring/midtermFiles/arrivingAnimals.txt";
-        File file = new File(filePath);
+        String animalsFilePath = "arrivingAnimals.txt";
+        String namesFilePath = "animalNames.txt";
 
-        try (Scanner scanner = new Scanner(file)) {
+        // Load names categorized by species
+        Map<String, List<String>> animalNamesMap = AnimalNameLoader.loadNamesFromFile(namesFilePath);
+
+        // Track name usage for each species
+        Map<String, Integer> nameIndexMap = new HashMap<>();
+
+        try (Scanner scanner = new Scanner(new File(animalsFilePath))) {
             while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+                String line = scanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    String[] parts = line.split(", ");
 
-                // Age is in the first element of the array named parts
-                String[] parts = line.split(", ");
+                    // Check if the line has at least 1 part
+                    if (parts.length >= 1) {
+                        String ageAndSpecies = parts[0];
 
-                // Check if the line has at least 1 part
-                if (parts.length >= 1) {
-                    String ageAndSpecies = parts[0];
-                    System.out.println("ageAndSpecies: " + ageAndSpecies );
+                        // Get age out of 'ageAndSpecies'
+                        String[] theParts = ageAndSpecies.split(" ");
+                        age = Integer.parseInt(theParts[0]);
+                        species = theParts[4];
 
-                    // Get age out of 'ageAndSpecies'
-                    String[] theParts = ageAndSpecies.split(" ");
-                    for (int i=0; i<5; i++) {
-                        System.out.println("theParts[" + i + "] is " + theParts[i]);
+                        // Assign a name based on species
+                        name = AnimalNameLoader.assignName(animalNamesMap, nameIndexMap, species);
+
+                        // Create and add the animal
+                        Animal myAnimal = new Animal(name, species, age);
+                        animals.add(myAnimal);
                     }
-                    age = Integer.parseInt(theParts[0]);
-                    species = theParts[4];
-
-                    // Create a new animal object.
-                    Animal myAnimal = new Animal("name needed", species, age);
-
-                    // Add the new Animal object to the ArrayList of Animals
-                    animals.add(myAnimal);
+                    System.out.println("\n Number of animals is: " + Animal.numOfAnimals);
                 }
-                System.out.println("\n Number of animals is: " + Animal.numOfAnimals);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + filePath);
+            System.out.println("File not found: " + animalsFilePath);
             e.printStackTrace();
         }
 
