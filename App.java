@@ -1,5 +1,6 @@
 package dennisMohle.myZoo.com;
 
+// Import dependancies
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,60 +15,60 @@ public class App {
         System.out.println("\n\n Welcome to My Zoo Program\n\n");
         System.out.println("\n Number of animals is: " + Animal.numOfAnimals);
 
-        // local variables
+        // local variables needed for animal creation
         String name;
         String species;
         int age;
 
-        // ArrayList of Animal objects
+        // ArrayList of Animal objects - array for holding animals
         ArrayList<Animal> animals = new ArrayList<>();
 
-        // Open an external file, parse it line by line, and get age and species
+        // creating a String for each file
         String animalsFilePath = "arrivingAnimals.txt";
         String namesFilePath = "animalNames.txt";
 
-        // Load names categorized by species
+        // Load map of names categorized by species, calls a class.method and passes along the file's string
         Map<String, List<String>> animalNamesMap = AnimalNameLoader.loadNamesFromFile(namesFilePath);
 
         // Track name usage for each species
         Map<String, Integer> nameIndexMap = new HashMap<>();
 
-        try (Scanner scanner = new Scanner(new File(animalsFilePath))) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine().trim();
-                if (!line.isEmpty()) {
-                    String[] parts = line.split(", ");
+        try (Scanner scanner = new Scanner(new File(animalsFilePath))) { //calls the animalArrivals
+            while (scanner.hasNextLine()) { // Go through it line by line -
+                String line = scanner.nextLine().trim(); // and trim white space
+                if (!line.isEmpty()) { //checks that line isnt empty
+                    String[] parts = line.split(", "); //splits the line into parts using the commas
 
                     // Check if the line has at least 1 part
                     if (parts.length >= 1) {
-                        String ageAndSpecies = parts[0];
+                        String ageAndSpecies = parts[0]; // stores the first part "ex: 8 year old female hyena"
 
-                        // Get age out of 'ageAndSpecies'
-                        String[] theParts = ageAndSpecies.split(" ");
+                        // Get age out of 'ageAndSpecies' - takes the age (8) and species (hyena)
+                        String[] theParts = ageAndSpecies.split(" "); //split by space
                         age = Integer.parseInt(theParts[0]);
                         species = theParts[4];
 
-                        // Assign a name based on species
+                        // Assign a name based on species - calls the assignName method within AnimalNameLoader class. passes the map, its index, and species
                         name = AnimalNameLoader.assignName(animalNamesMap, nameIndexMap, species);
 
-                        // Create and add the animal
+                        // Create animal and add properties
                         Animal myAnimal = new Animal(name, species, age);
-                        animals.add(myAnimal);
+                        animals.add(myAnimal); //adds animal to the array we created earlier.
                     }
                     System.out.println("\n Number of animals is: " + Animal.numOfAnimals);
                 }
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found: " + animalsFilePath);
-            e.printStackTrace();
+            e.printStackTrace();  // if theres an error we have this catch to print out some relavent info
         }
 
         // We now have an arrayList of Animals. Let's output them!
-        for (Animal animal : animals){
+        for (Animal animal : animals){ //cycle through every animal in animals arr
             System.out.println(animal);
             System.out.println("Animal name: " + animal.getName() + ", Age: " + animal.getAge() + ", Species: " + animal.getSpecies());
         }
-        System.out.println("\n Number of animals is: " + Animal.numOfAnimals);
+        System.out.println("\n Number of animals is: " + Animal.numOfAnimals); //tells how many animals we made
 
     }
 }
