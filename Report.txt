@@ -1,0 +1,19 @@
+    The base app provided did a lot of the heavy lifting and was a great reference for how to make the program work. From my
+understanding, the only thing that was missing was to assign names to the animals. to that end I created an array I believe
+is called a map? its structured:
+{hyena=[Shenzi, Banzai, Ed, Zig, Bud, Lou, Kamari, Wema, Nne, Madoa, Prince Nevarah], bear=[Yogi, Smokey, Paddington, Lippy, Bungle, Baloo, Rupert, Winnie the Pooh, Snuggles, Bert], tiger=[Tony, Tigger, Amber, Cosimia, Cuddles, Dave, Jiba, Rajah, Rayas, Ryker], lion=[Scar, Mufasa, Simba, Kiara, King, Drooper, Kimba, Nala, Leo, Samson, Elsa, Cecil]}
+it can be read as type hyena and then a list of names for them. To achieve that. the loadnames from files takes each species formated as:
+Hyena Names:
+Shenzi, Banzai, Ed, Zig, Bud, Lou, Kamari, Wema, Nne, Madoa, Prince Nevarah
+it checks for the Names: part and takes the Hyena as the species. I had to make it lowercase the word so that it matched
+the way it is written in arrivingAnimals.txt. I used the .tolowercase instead of just changing the txt because I felt that
+akin to cheating in a way, didnt want to change the txts from how they were writen. Anyways now there was a map for Names,
+but it needed an index so that it remembers which names have been used already. Before that, App was already capable of
+reading the arrivingAnimals and extracting the age and species. Now it needed a name so it calls the assignName method and
+passes on the species, index and names map we created. The method then checks the species and loads the list for that species
+using the index it gets the next name on the list and returns the name. App now has the three properties and creates an
+animal instance with those properties and adds it to our list of animals. When done it prints them all out.
+
+    While I was able to get the program to work properly and achieve the requirements, I had to do a lot of referencing.
+I am also taking a JavaScript class and so the flow feels familiar but the syntax is very different. Its throwing me off
+I think I just have to get more practice under my belt.
